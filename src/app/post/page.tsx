@@ -1,3 +1,4 @@
+
 import { syncUser } from "../lib/syncUser";
 import { redirect } from "next/navigation"; 
 import PostClient from "./PostClient";

@@ -7,7 +7,7 @@
 // Uses Kinde's server-side session to get the authenticated user info.
 
 
-import User from "../models/User";
+import User from "../api/models/User";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { connectDB } from "../lib/mongodb";
 

@@ -32,6 +32,13 @@ export default async function Dashboard() {
           <span className="font-semibold text-gray-700">
             {user?.given_name || user?.email || "User"}
           </span>
+                        <a
+                href="/"
+                className="rounded-xl border px-4 py-2 text-center hover:text-blue-600 focus:text-blue-600 transition"
+              >
+                Explore
+              </a>
+
         </div>
 
         {/* CENTER: Post */}
