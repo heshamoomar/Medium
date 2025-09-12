@@ -80,13 +80,24 @@ const handleSubmit = async (e: React.FormEvent) => {
 
           <a
             href="/dashboard"
-            className="rounded-xl border px-4 py-2 text-sm hover:text-blue-600 focus:text-blue-600 transition"
+            className="rounded-xl border px-4 py-2 text-center hover:text-blue-600 focus:text-blue-600 transition"
           >
             Dashboard
           </a>
         </div>
 
-        <LogoutLink className="rounded-xl border px-4 py-2 text-sm hover:text-blue-600 focus:text-blue-600 transition">
+      {/* CENTER: Explore */}
+        <div className="flex items-center gap-4 absolute left-1/2 transform -translate-x-1/2">
+              <a
+                href="/"
+                className="rounded-xl border px-4 py-2 text-center hover:text-blue-600 focus:text-blue-600 transition"
+              >
+                Explore
+              </a>
+        </div>
+
+
+        <LogoutLink className="rounded-xl border px-4 py-2 text-center hover:text-blue-600 focus:text-blue-600 transition">
           Logout
         </LogoutLink>
       </header>

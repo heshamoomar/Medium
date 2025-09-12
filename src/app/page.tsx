@@ -1,10 +1,12 @@
 import { RegisterLink, LoginLink, LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import OnClickUserName from "./components/onClickUserName";
+import { syncUser } from "../app/lib/syncUser";
 
 export default async function Home() {
   const { getUser, isAuthenticated } = getKindeServerSession();
   const user = await getUser();
+  await syncUser(); // Sync user with our DB to make sure we have their latest info (e.g., last login time)
   const authenticated = await isAuthenticated();
 
   return (
@@ -15,14 +17,14 @@ export default async function Home() {
         <div className="flex items-center gap-3">
           {authenticated && user ? (
             <>
-              <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
                 {user?.picture ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <a href="/dashboard">
                     <img
                       src={user.picture}
                       alt="Profile"
-                      className="w-10 h-10 rounded-full object-cover"
+                      className="w-12 h-12 rounded-full object-cover"
                     />
                   </a>
                 ) : (

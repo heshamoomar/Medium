@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { connectDB } from "../../lib/mongodb";
 import Post from "../models/Post.js";
 import cloudinary from "../../lib/cloudinary";
-import mongoose from "mongoose";
-import { error } from "console";
 
 export async function POST(req: Request) {
   try {
