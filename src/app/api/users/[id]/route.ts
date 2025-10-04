@@ -1,12 +1,8 @@
 "use server";
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "../../../lib/mongodb";
-import Post from "../../models/Post.js";
-import cloudinary from "../../../lib/cloudinary";
 import mongoose from "mongoose";
-import { error } from "console";
 import User from "../../models/User";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export async function GET(
   request: NextRequest,

@@ -1,7 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { connectDB } from "../../lib/mongodb";
 import Post from "../models/Post.js";
 import cloudinary from "../../lib/cloudinary";
+import mongoose from "mongoose";
+
 
 export async function POST(req: Request) {
   try {
@@ -57,4 +59,29 @@ export async function POST(req: Request) {
   }
 }
 
+export async function GET(req: NextRequest) {
+  try {
+    await connectDB();
+
+    console.log("Fetching all posts: ");
+
+    const posts = await Post.find().sort({ createdAt: -1 }).lean(); // newest first
+
+    if (!posts || posts.length === 0) {
+      return NextResponse.json(
+        { message: "No posts found." },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(posts, { status: 200 });
+
+
+  } catch (err) {
+    console.error("❌ Error fetching posts:", err);
+    return NextResponse.json({ error: "Failed to fetch posts" }, { status: 500 });
+
+
+  } 
+}
 

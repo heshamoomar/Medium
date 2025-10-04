@@ -1,4 +1,5 @@
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import UserPosts from "./dashboardClient"; // client component to display user posts
 // import { requireUser }from "../lib/auth"; // utility function to require user auth and get user info
 
 import { syncUser } from "../lib/syncUser";
@@ -6,15 +7,18 @@ import { redirect } from "next/navigation";
 
 export default async function Dashboard() {
 
-//  const user = await requireUser(); // Redirects to "/" if not authenticated
-
-
-  const user = await syncUser();
-
+  const user = await syncUser(); // fetch and sync user from Kinde to MongoDB to keep updated
+  
   if (!user) {
     redirect("/"); // not logged in
   }
+  
   console.log("DB User:", user);
+
+  const plainUser = JSON.parse(JSON.stringify(user)); // to remove Mongoose document methods
+  
+  const userId= plainUser._id; // needed because UserPosts is a Client Component and cannot receive Mongoose document directly
+  // (could also use user.toObject() if it were available)
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
@@ -58,19 +62,39 @@ export default async function Dashboard() {
       </header>
 
       {/* Main dashboard content */}
-      <main className="flex flex-1 w-full flex-col items-center justify-center px-8 py-10">
-        <div className="flex w-full max-w-2xl flex-col items-center justify-center rounded-lg bg-white shadow-lg px-8 py-10">
-          <h1 className="text-4xl font-bold mb-4 text-gray-800">
-            Dashboard
-          </h1>
-          <div className="flex flex-col items-center mb-8">
-            <h2 className="text-2xl font-semibold text-gray-700">
-              Welcome, {user?.given_name || user?.email || "User"}!
-            </h2>
-            <p className="text-gray-500 mt-2">{user?.email}</p>
-          </div>
-        </div>
-      </main>
+      <main className="flex flex-1 w-full flex-col items-center px-8 py-10">
+
+            {/* User Header */}
+        <div className="flex items-center gap-4 border-b pb-4">
+      {user?.picture ? (
+      <img
+        src={user.picture}
+        alt={user.given_name + " " + user.family_name || "User"}
+        className="w-16 h-16 rounded-full object-cover shadow"
+      />
+      ) : (
+      <span className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-2xl text-gray-400 shadow">
+        👤
+      </span>
+      )}
+      <div>
+      <h1 className="text-xl font-semibold">
+        {user.given_name + " " + user.family_name || "Unnamed User"}
+      </h1>
+      <p className="text-gray-500 text-sm">
+        {user.email || "No email provided"}
+      </p>
+                        
+      </div>
+    </div>
+        {/* Separated Posts fetching & showing skeleton and shwoing posts to another page 
+          because showing a skeleton until posts are fetched requires React hooks which are client components. */}
+        
+        {/* User Posts */}
+        <UserPosts userId={userId} /> {/* pass userId to fetch posts for that user */}
+
+
+      </main>    
     </div>
   );
 }

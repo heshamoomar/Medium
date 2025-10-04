@@ -2,16 +2,18 @@ import { notFound } from "next/dist/client/components/navigation";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { RegisterLink, LoginLink, LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import OnClickUserName from "../../components/onClickUserName";
+import UserPosts from "../../dashboard/dashboardClient"; // client component to display user posts
 
-
-// Get user session info
-const { getUser, isAuthenticated } = getKindeServerSession();
-const user = await getUser();
-const authenticated = await isAuthenticated();
-console.log("User:", user);
-console.log("Authenticated:", authenticated);
 
 export default async function Page({ params }: { params: { id: string } }) {
+  // Get user session info
+  const { getUser, isAuthenticated } = getKindeServerSession();
+  const session_user = await getUser();
+  const authenticated = await isAuthenticated();
+  console.log("Session user:", session_user);
+  console.log("Authenticated:", authenticated);
+
+  // --- Fetch User by ID from params ---
   const { id } = await params;
   // --- Fetch User ---
   const fetched_user = await fetch(
@@ -29,7 +31,13 @@ export default async function Page({ params }: { params: { id: string } }) {
 
 
   const user = await fetched_user.json();
-  console.log("User:", user);
+  console.log("Fetched user:", user);
+
+    const plainUser = JSON.parse(JSON.stringify(user)); // to remove Mongoose document methods
+  
+  const userId= plainUser._id; // needed because UserPosts is a Client Component and cannot receive Mongoose document directly
+  // (could also use user.toObject() if it were available)
+
 
   const lastLoginDate = user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : "N/A";
   const lastLoginTime = user.lastLogin ? new Date(user.lastLogin).toLocaleTimeString() : "N/A";
@@ -51,14 +59,14 @@ export default async function Page({ params }: { params: { id: string } }) {
     <header className="w-full flex items-center justify-between bg-white shadow px-8 py-4">
       {/* LEFT: User avatar + name + dashboard */}
       <div className="flex items-center gap-3">
-        {authenticated && user ? (
+        {authenticated && session_user ? (
           <>
             <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
-              {user?.picture ? (
+              {session_user?.picture ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <a href="/dashboard">
                   <img
-                    src={user.picture}
+                    src={session_user.picture}
                     alt="Profile"
                     className="w-12 h-12 rounded-full object-cover"
                   />
@@ -67,13 +75,8 @@ export default async function Page({ params }: { params: { id: string } }) {
                 <span className="text-2xl text-gray-400">👤</span>
               )}
             </div>
-            <OnClickUserName userAgent={user} />
-            <a
-              href="/dashboard"
-              className="rounded-xl border px-4 py-2 text-center hover:text-blue-600 focus:text-blue-600 transition"
-            >
-              Dashboard
-            </a>
+            <OnClickUserName userAgent={session_user} />
+
           </>
         ) : (
           <span className="text-gray-500 font-medium">Welcome, Guest!</span>
@@ -94,7 +97,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
       {/* RIGHT: Auth buttons */}
       <div className="flex items-center gap-4">
-        {authenticated && user ? (
+        {authenticated && session_user ? (
           <LogoutLink className="rounded-xl border px-4 py-2 text-center hover:text-blue-600 focus:text-blue-600 transition">
             Logout
           </LogoutLink>
@@ -159,6 +162,13 @@ export default async function Page({ params }: { params: { id: string } }) {
         </p>
       )}
     </section>
+            {/* Separated Posts fetching & showing skeleton and shwoing posts to another page 
+              because showing a skeleton until posts are fetched requires React hooks which are client components. */}
+            
+            {/* User Posts */}
+            <UserPosts userId={userId} /> {/* userId to fetch posts for that user */}
+    
+    
   </main>
 </div>
 
