@@ -1,0 +1,13 @@
+var R=require("../../../../chunks/[turbopack]_runtime.js")("server/app/api/auth/[...kindeAuth]/route.js")
+R.c("server/chunks/node_modules_c614bd61._.js")
+R.c("server/chunks/node_modules_next_f17523e8._.js")
+R.c("server/chunks/node_modules_@kinde-oss_kinde-auth-nextjs_dist_c525ee90._.js")
+R.c("server/chunks/node_modules_@kinde-oss_kinde-typescript-sdk_dist_models_d7e9da0d._.js")
+R.c("server/chunks/node_modules_@kinde-oss_kinde-typescript-sdk_dist_apis_b67939dd._.js")
+R.c("server/chunks/node_modules_@kinde-oss_kinde-typescript-sdk_dist_sdk_bd0339af._.js")
+R.c("server/chunks/node_modules_@kinde-oss_kinde-typescript-sdk_dist_04d5ec75._.js")
+R.c("server/chunks/node_modules_ea9dd6b3._.js")
+R.c("server/chunks/[root-of-the-server]__0a4741ca._.js")
+R.m("[project]/.next-internal/server/app/api/auth/[...kindeAuth]/route/actions.js [app-rsc] (server actions loader, ecmascript)")
+R.m("[project]/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/src/app/api/auth/[...kindeAuth]/route.js [app-route] (ecmascript)\" } [app-route] (ecmascript)")
+module.exports=R.m("[project]/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/src/app/api/auth/[...kindeAuth]/route.js [app-route] (ecmascript)\" } [app-route] (ecmascript)").exports

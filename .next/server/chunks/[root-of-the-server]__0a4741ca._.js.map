@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 3, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 61, "column": 0}, "map": {"version":3,"sources":["file:///D:/CS/Medium/medium/src/app/api/auth/%5B...kindeAuth%5D/route.js"],"sourcesContent":["import {handleAuth} from \"@kinde-oss/kinde-auth-nextjs/server\";\r\n\r\nexport const GET = handleAuth();"],"names":[],"mappings":";;;;AAAA;AAAA;;AAEO,MAAM,MAAM,IAAA,2PAAU","debugId":null}}]
+}
